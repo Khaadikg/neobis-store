@@ -7,8 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "customers")
+@Entity @Table(name = "customers")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor

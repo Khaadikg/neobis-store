@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.service;
 
+import com.neobis.onlinestore.model.Basket;
 import com.neobis.onlinestore.model.Customer;
 import com.neobis.onlinestore.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class CustomerService {
     public List<Customer> getALlCustomers() {
         return customerRepository.findAll();
     }
+
     public ResponseEntity<?> getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id).orElse(null);
         if (customer == null) {
@@ -23,16 +25,19 @@ public class CustomerService {
         }
         return ResponseEntity.ok().body(customer);
     }
+
     public ResponseEntity<String> saveCustomer(Customer customer) {
         if (customerRepository.findByUsername(customer.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body(
                     "Customer with username \"" + customer.getUsername()
-                    + "\" already exist!");
+                            + "\" already exist!");
         }
+        customer.setBasket(Basket.builder().customer(customer).build());
         customerRepository.save(customer);
         return ResponseEntity.ok("Customer saved fine!");
     }
-    public ResponseEntity<String> updateCustomer(String name,  String surname, Long id) {
+
+    public ResponseEntity<String> updateCustomer(String name, String surname, Long id) {
         Customer customer1 = customerRepository.findById(id).orElse(null);
         if (customer1 == null) {
             return ResponseEntity.badRequest().body("No such user found by id = " + id);
@@ -42,6 +47,7 @@ public class CustomerService {
         customerRepository.save(customer1);
         return ResponseEntity.ok("Customer successfully saved!");
     }
+
     public ResponseEntity<String> deleteCustomerById(Long id) {
         if (customerRepository.findById(id).isEmpty()) {
             return ResponseEntity.badRequest().body("No such user found by id = " + id);

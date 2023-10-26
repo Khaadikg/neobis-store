@@ -25,20 +25,24 @@ public class CustomerController {
     public List<Customer> getAllCustomers() {
         return customerService.getALlCustomers();
     }
+
     @PostMapping
     public ResponseEntity<String> saveCustomer(@RequestBody Customer customer) {
         return customerService.saveCustomer(customer);
     }
+
     @GetMapping("{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
         return customerService.getCustomerById(id);
     }
+
     @PutMapping("{id}")
     public ResponseEntity<String> updateCustomer(@RequestParam String name,
                                                  @RequestParam String surname,
                                                  @PathVariable Long id) {
         return customerService.updateCustomer(name, surname, id);
     }
+
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteCustomerById(@PathVariable Long id) {
         return customerService.deleteCustomerById(id);
