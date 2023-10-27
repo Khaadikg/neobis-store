@@ -16,9 +16,7 @@ public class Product {
     private Long id;
     private String name;
     private Integer barcode;
-    private Integer price;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinColumn(name = "order_id")
-    private Order order;
-
+    private Double price;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    private OrderDetails orderDetails;
 }

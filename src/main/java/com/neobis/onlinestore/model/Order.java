@@ -16,9 +16,11 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinColumn(name = "basket_id")
-    private Basket basket;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "order")
-    private List<Product> products;
+    private List<OrderDetails> orderDetails;
+
+
 }
