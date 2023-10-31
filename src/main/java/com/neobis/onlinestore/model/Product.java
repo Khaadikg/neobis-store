@@ -15,8 +15,10 @@ public class Product {
     @Column(name="id", insertable=false, updatable=false)
     private Long id;
     private String name;
+    private String description;
+    @Column(unique = true)
     private Integer barcode;
     private Double price;
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, mappedBy = "product")
     private OrderDetails orderDetails;
 }

@@ -3,23 +3,21 @@ package com.neobis.onlinestore.controller;
 import com.neobis.onlinestore.model.User;
 import com.neobis.onlinestore.model.UserInfo;
 import com.neobis.onlinestore.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/customers")
+@RequiredArgsConstructor
+@RequestMapping("api/users")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserInfo> getAllUsers() {
         return userService.getALlUsers();
     }
 
@@ -29,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public UserInfo getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
