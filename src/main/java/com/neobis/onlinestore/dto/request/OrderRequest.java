@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.dto.request;
 
+import antlr.collections.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
