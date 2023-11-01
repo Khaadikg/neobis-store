@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.model;
 
+import com.neobis.onlinestore.model.enums.OrderStage;
 import com.neobis.onlinestore.model.enums.OrderType;
 import lombok.*;
 
@@ -19,13 +20,19 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderType type;
 
+    @Enumerated(EnumType.STRING)
+
+    private OrderStage stage;
+
     private String address;
+
+    private Double totalOrderPrice;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "order")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, mappedBy = "order")
     private List<OrderDetails> orderDetails;
 
 }

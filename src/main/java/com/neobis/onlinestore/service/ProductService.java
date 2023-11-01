@@ -60,6 +60,12 @@ public class ProductService {
         );
     }
 
+    public Product checkExistAndReturnProductByBarcode(Integer barcode) {
+        return productRepository.findByBarcode(barcode).orElseThrow(
+                () -> new NotFoundException("No such product found by barcode = " + barcode)
+        );
+    }
+
     public Product mapToProduct(ProductRequest request) {
         return Product.builder()
                 .barcode(request.getBarcode())
