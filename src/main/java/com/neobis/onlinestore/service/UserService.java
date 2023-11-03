@@ -15,8 +15,8 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public List<UserInfo> getALlUsers() {
-        return userRepository.findAll().stream().map(User::getInfo).toList();
+    public List<User> getALlUsers() {
+        return userRepository.findAll();
     }
 
     public UserInfo getUserById(Long id) {

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,13 +22,13 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Get all users", description = "Getting all users information")
-    public List<UserInfo> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getALlUsers();
     }
 
     @PostMapping
     @Operation(summary = "Save user", description = "Saving new user")
-    public ResponseEntity<String> saveUser(@RequestBody User user) {
+    public ResponseEntity<String> saveUser(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 
@@ -39,7 +40,7 @@ public class UserController {
 
     @PutMapping("{id}")
     @Operation(summary = "Update", description = "Updating user information by id")
-    public ResponseEntity<String> updateUser(@RequestBody UserInfo info,
+    public ResponseEntity<String> updateUser(@Valid @RequestBody UserInfo info,
                                              @PathVariable Long id) {
         return userService.updateUser(info, id);
     }

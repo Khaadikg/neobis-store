@@ -2,7 +2,6 @@ package com.neobis.onlinestore.controller;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
 import com.neobis.onlinestore.service.OrderService;
-import com.neobis.onlinestore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class OrderController {
     @DeleteMapping("{id}")
     @Operation(summary = "Decline order", description = "Deletes order with order details by id")
     public ResponseEntity<String> declineOrder(@PathVariable Long id,
-                                               @RequestParam String reason) {
+                                               @RequestParam(required = false) String reason) {
         return orderService.declineOrder(id, reason);
     }
 

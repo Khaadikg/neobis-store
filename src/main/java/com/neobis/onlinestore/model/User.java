@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -24,7 +27,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     @Column(unique = true)
+    @Size(min = 2, max = 32, message = "Surname length must be between 2 and 32")
     private String username;
+    @Size(min = 8, max = 32, message = "Password must be between 8 and 32 digits")
     private String password;
     @Column(name = "created_date")
     @CreationTimestamp
