@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.service;
 
+import com.neobis.onlinestore.dto.request.UserRequest;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.model.User;
 import com.neobis.onlinestore.model.UserInfo;
@@ -32,9 +33,17 @@ public class UserService {
         return ResponseEntity.ok("User saved fine!");
     }
 
-    public ResponseEntity<String> updateUser(UserInfo info, Long id) {
+    public ResponseEntity<String> updateUserInfo(UserInfo info, Long id) {
         User user = checkExistAndReturnUser(id);
         user.setInfo(info);
+        userRepository.save(user);
+        return ResponseEntity.ok("User successfully saved!");
+    }
+
+    public ResponseEntity<String> updateUserMainInfo(UserRequest request, Long id) {
+        User user = checkExistAndReturnUser(id);
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
         userRepository.save(user);
         return ResponseEntity.ok("User successfully saved!");
     }

@@ -1,6 +1,7 @@
 package com.neobis.onlinestore.controller;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
+import com.neobis.onlinestore.model.Order;
 import com.neobis.onlinestore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,4 +33,8 @@ public class OrderController {
         return orderService.declineOrder(id, reason);
     }
 
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
 }

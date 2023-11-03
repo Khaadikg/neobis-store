@@ -1,8 +1,10 @@
 package com.neobis.onlinestore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity @Table(name = "products")
 @Getter @Setter
@@ -19,6 +21,7 @@ public class Product {
     @Column(unique = true)
     private Integer barcode;
     private Double price;
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, mappedBy = "product")
-    private OrderDetails orderDetails;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, mappedBy = "product")
+    private List<OrderDetails> orderDetails;
 }

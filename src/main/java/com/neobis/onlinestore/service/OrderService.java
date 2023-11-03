@@ -48,6 +48,9 @@ public class OrderService {
         return ResponseEntity.ok("Order has been declined \n" + "Reason: " + reason);
     }
 
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
     private List<OrderDetails> mapArrayRequestToOrderDetailsList(List<OrderRequest> array) {
         List<OrderDetails> list = new ArrayList<>();
         for (OrderRequest request : array) {

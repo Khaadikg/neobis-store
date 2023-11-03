@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.controller;
 
+import com.neobis.onlinestore.dto.request.UserRequest;
 import com.neobis.onlinestore.model.User;
 import com.neobis.onlinestore.model.UserInfo;
 import com.neobis.onlinestore.service.UserService;
@@ -38,11 +39,18 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("info/{id}")
     @Operation(summary = "Update", description = "Updating user information by id")
-    public ResponseEntity<String> updateUser(@Valid @RequestBody UserInfo info,
+    public ResponseEntity<String> updateUserInfo(@Valid @RequestBody UserInfo info,
                                              @PathVariable Long id) {
-        return userService.updateUser(info, id);
+        return userService.updateUserInfo(info, id);
+    }
+
+    @PutMapping("{id}")
+    @Operation(summary = "Update", description = "Updating user main info")
+    public ResponseEntity<String> updateUser(@Valid @RequestBody UserRequest userRequest,
+                                             @PathVariable Long id) {
+        return userService.updateUserMainInfo(userRequest, id);
     }
 
     @DeleteMapping("{id}")
