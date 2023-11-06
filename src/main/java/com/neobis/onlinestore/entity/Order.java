@@ -1,14 +1,15 @@
-package com.neobis.onlinestore.model;
+package com.neobis.onlinestore.entity;
 
-import com.neobis.onlinestore.model.enums.OrderStage;
-import com.neobis.onlinestore.model.enums.OrderType;
+import com.neobis.onlinestore.entity.enums.OrderStage;
+import com.neobis.onlinestore.entity.enums.OrderType;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
 import java.util.List;
-@Entity @Table(name = "orders")
+@Entity
+@Table(name = "orders")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,6 +28,7 @@ public class Order {
     private OrderStage stage;
 
     private String address;
+    private boolean orderDeclined;
 
     private Double totalOrderPrice;
 

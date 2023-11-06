@@ -1,12 +1,12 @@
 package com.neobis.onlinestore.service;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
+import com.neobis.onlinestore.entity.Order;
+import com.neobis.onlinestore.entity.OrderDetails;
+import com.neobis.onlinestore.entity.Product;
+import com.neobis.onlinestore.entity.enums.OrderStage;
+import com.neobis.onlinestore.entity.enums.OrderType;
 import com.neobis.onlinestore.exception.NotFoundException;
-import com.neobis.onlinestore.model.Order;
-import com.neobis.onlinestore.model.OrderDetails;
-import com.neobis.onlinestore.model.Product;
-import com.neobis.onlinestore.model.enums.OrderStage;
-import com.neobis.onlinestore.model.enums.OrderType;
 import com.neobis.onlinestore.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

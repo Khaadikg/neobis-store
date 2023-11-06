@@ -2,8 +2,8 @@ package com.neobis.onlinestore.service;
 
 import com.neobis.onlinestore.dto.request.ProductRequest;
 import com.neobis.onlinestore.dto.response.ProductResponse;
+import com.neobis.onlinestore.entity.Product;
 import com.neobis.onlinestore.exception.NotFoundException;
-import com.neobis.onlinestore.model.Product;
 import com.neobis.onlinestore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

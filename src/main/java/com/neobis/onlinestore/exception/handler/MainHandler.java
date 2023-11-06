@@ -1,16 +1,16 @@
 package com.neobis.onlinestore.exception.handler;
 
 import com.neobis.onlinestore.exception.NotFoundException;
+import com.neobis.onlinestore.exception.UserAlreadyExistException;
 import com.neobis.onlinestore.exception.reponse.ExceptionResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -21,6 +21,12 @@ public class MainHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse notFoundException(NotFoundException e) { // если сущность (user,product, etc...) не была найдена
         return new ExceptionResponse(HttpStatus.NOT_FOUND, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.FOUND)
+    public ExceptionResponse UserAlreadyExistException(UserAlreadyExistException e) { // если введенный логин уже существует
+        return new ExceptionResponse(HttpStatus.FOUND, e.getClass().getName(), e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

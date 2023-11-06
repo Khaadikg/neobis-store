@@ -1,12 +1,13 @@
-package com.neobis.onlinestore.model;
+package com.neobis.onlinestore.entity;
 
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
-import javax.persistence.Embeddable;
-import javax.validation.constraints.*;
 
 @Getter @Setter
-@Embeddable @Builder
+@Embeddable
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfo {

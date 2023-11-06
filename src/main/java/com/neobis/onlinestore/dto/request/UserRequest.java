@@ -1,6 +1,5 @@
 package com.neobis.onlinestore.dto.request;
 
-import com.neobis.onlinestore.model.enums.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

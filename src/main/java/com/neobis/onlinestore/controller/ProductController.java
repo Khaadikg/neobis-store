@@ -20,7 +20,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get product", description = "Getting product information by id")
     public ProductResponse getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
@@ -32,7 +32,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update product", description = "Updating product information by id")
     public ResponseEntity<String> updateProductById(@RequestBody ProductRequest request,
                                                     @PathVariable Long id) {

@@ -1,4 +1,4 @@
-package com.neobis.onlinestore.model.enums;
+package com.neobis.onlinestore.entity.enums;
 
 public enum OrderType {
     COURIER, PICKUP, TERMINAL

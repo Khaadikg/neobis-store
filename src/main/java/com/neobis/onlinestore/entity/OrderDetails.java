@@ -1,11 +1,11 @@
-package com.neobis.onlinestore.model;
+package com.neobis.onlinestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
-
-@Entity @Table(name = "order_details")
+@Entity
+@Table(name = "order_details")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor

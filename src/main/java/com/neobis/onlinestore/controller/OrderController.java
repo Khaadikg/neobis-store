@@ -1,7 +1,7 @@
 package com.neobis.onlinestore.controller;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
-import com.neobis.onlinestore.model.Order;
+import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +26,7 @@ public class OrderController {
         return orderService.makeOrder(requests, address, type);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Decline order", description = "Deletes order with order details by id")
     public ResponseEntity<String> declineOrder(@PathVariable Long id,
                                                @RequestParam(required = false) String reason) {
