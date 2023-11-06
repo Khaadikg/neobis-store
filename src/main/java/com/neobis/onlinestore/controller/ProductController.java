@@ -5,6 +5,7 @@ import com.neobis.onlinestore.dto.response.ProductResponse;
 import com.neobis.onlinestore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +33,15 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @Operation(summary = "Update product", description = "Updating product information by id")
-    public ResponseEntity<String> updateProductById(@RequestBody ProductRequest request,
-                                                    @PathVariable Long id) {
-        return productService.updateProductById(request, id);
+    public ResponseEntity<String> updateProductByBarcode(@RequestBody @Valid ProductRequest request) {
+        return productService.updateProductByBarcode(request);
     }
 
     @PostMapping
     @Operation(summary = "Save product", description = "Saving new product")
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequest request) {
+    public ResponseEntity<String> addProduct(@RequestBody @Valid ProductRequest request) {
         return productService.saveProduct(request);
     }
 

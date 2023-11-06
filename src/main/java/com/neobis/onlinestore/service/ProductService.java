@@ -5,6 +5,7 @@ import com.neobis.onlinestore.dto.response.ProductResponse;
 import com.neobis.onlinestore.entity.Product;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.repository.ProductRepository;
+import com.neobis.onlinestore.repository.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductTypeRepository productTypeRepository;
 
     public ProductResponse getProductById(Long id) {
         Product product = checkExistAndReturnProduct(id);
-        return ProductResponse.builder()
-                .name(product.getName())
-                .barcode(product.getBarcode())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
+        return mapToProductResponse(product);
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -44,11 +41,14 @@ public class ProductService {
         return ResponseEntity.ok("Product has been removed!");
     }
 
-    public ResponseEntity<String> updateProductById(ProductRequest request, Long id) {
-        Product product = checkExistAndReturnProduct(id);
+    public ResponseEntity<String> updateProductByBarcode(ProductRequest request) {
+        Product product = checkExistAndReturnProductByBarcode(request.getBarcode());
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
+        product.setProductType(productTypeRepository.findByName().orElseThrow(
+                () -> new NotFoundException("Not found product type name = " + request.getProductType())
+        ));
         product.setBarcode(request.getBarcode());
         productRepository.save(product);
         return ResponseEntity.badRequest().body("Product has been updated!");
@@ -69,6 +69,9 @@ public class ProductService {
     public Product mapToProduct(ProductRequest request) {
         return Product.builder()
                 .barcode(request.getBarcode())
+                .productType(productTypeRepository.findByName().orElseThrow(
+                        () -> new NotFoundException("Not found product type name = " + request.getProductType())
+                ))
                 .description(request.getDescription())
                 .name(request.getName())
                 .price(request.getPrice())
@@ -79,6 +82,7 @@ public class ProductService {
         return ProductResponse.builder()
                 .barcode(product.getBarcode())
                 .description(product.getDescription())
+                .productType(product.getProductType())
                 .name(product.getName())
                 .price(product.getPrice())
                 .build();

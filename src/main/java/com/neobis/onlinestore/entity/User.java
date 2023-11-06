@@ -11,16 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Entity @Table(name = "users")
-@Getter @Setter
+@Data @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +34,14 @@ public class User implements UserDetails {
     @Column(unique = true)
     @Size(min = 2, max = 32, message = "Surname length must be between 2 and 32")
     private String username;
-    @Size(min = 8, max = 256, message = "Password must be between 8 and 32 digits")
+    @Size(min = 8, max = 256, message = "Password must be between 8 and 256 digits")
     private String password;
     @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDate createdDate;
+    private ZonedDateTime createdDate;
     @Column(name = "updated_date")
     @UpdateTimestamp
-    private LocalDate updatedDate;
+    private ZonedDateTime updatedDate;
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
     private Set<Order> orders;
 

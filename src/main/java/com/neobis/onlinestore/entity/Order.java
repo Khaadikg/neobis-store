@@ -10,7 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.List;
 @Entity
 @Table(name = "orders")
-@Getter @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
