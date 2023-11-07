@@ -4,12 +4,16 @@ import com.neobis.onlinestore.dto.request.OrderRequest;
 import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.entity.OrderDetails;
 import com.neobis.onlinestore.entity.Product;
+import com.neobis.onlinestore.entity.User;
 import com.neobis.onlinestore.entity.enums.OrderStage;
 import com.neobis.onlinestore.entity.enums.OrderType;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.repository.OrderRepository;
+import com.neobis.onlinestore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final UserRepository userRepository;
 
     public ResponseEntity<String> makeOrder(List<OrderRequest> orderArray, String address, String type) {
         List<OrderDetails> details = mapArrayRequestToOrderDetailsList(orderArray);
@@ -28,6 +33,7 @@ public class OrderService {
         Order order = Order.builder()
                 .orderDetails(details)
                 .address(address)
+                .orderDeclined(false)
                 .totalOrderPrice(total)
                 .type(OrderType.valueOf(type.toUpperCase()))
                 .stage(OrderStage.ASSEMBLY)
@@ -44,13 +50,19 @@ public class OrderService {
         if (!order.getStage().equals(OrderStage.ASSEMBLY)) {
             return ResponseEntity.badRequest().body("Order cant be declined after assembly");
         }
-        orderRepository.delete(order);
+        order.setOrderDeclined(true);
+        orderRepository.save(order);
         return ResponseEntity.ok("Order has been declined \n" + "Reason: " + reason);
     }
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
+
+    public List<Order> getAllPersonalOrders() {
+        return orderRepository.findAllPersonalOrders(getAuthenticatedUser().getId());
+    }
+
     private List<OrderDetails> mapArrayRequestToOrderDetailsList(List<OrderRequest> array) {
         List<OrderDetails> list = new ArrayList<>();
         for (OrderRequest request : array) {
@@ -62,6 +74,13 @@ public class OrderService {
                     .build());
         }
         return list;
+    }
+
+    public User getAuthenticatedUser() {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            throw new NotFoundException("Authenticated user is null");
+        }
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }

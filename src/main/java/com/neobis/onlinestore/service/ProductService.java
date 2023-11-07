@@ -46,7 +46,7 @@ public class ProductService {
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
-        product.setProductType(productTypeRepository.findByName().orElseThrow(
+        product.setProductType(productTypeRepository.findByName(request.getName()).orElseThrow(
                 () -> new NotFoundException("Not found product type name = " + request.getProductType())
         ));
         product.setBarcode(request.getBarcode());
@@ -69,7 +69,7 @@ public class ProductService {
     public Product mapToProduct(ProductRequest request) {
         return Product.builder()
                 .barcode(request.getBarcode())
-                .productType(productTypeRepository.findByName().orElseThrow(
+                .productType(productTypeRepository.findByName(request.getName()).orElseThrow(
                         () -> new NotFoundException("Not found product type name = " + request.getProductType())
                 ))
                 .description(request.getDescription())

@@ -6,7 +6,7 @@ import com.neobis.onlinestore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("api/products")
 @Tag(name = "Product controller", description = "Uses for logic upon products")
-@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product", description = "Getting product information by id")
@@ -34,6 +38,7 @@ public class ProductController {
     }
 
     @PutMapping
+
     @Operation(summary = "Update product", description = "Updating product information by id")
     public ResponseEntity<String> updateProductByBarcode(@RequestBody @Valid ProductRequest request) {
         return productService.updateProductByBarcode(request);

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Make order", description = "Making order using order requests")
     public ResponseEntity<String> makeOrder(@RequestBody List<OrderRequest> requests,
                                             @RequestParam String address,
@@ -26,15 +28,24 @@ public class OrderController {
         return orderService.makeOrder(requests, address, type);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Decline order", description = "Deletes order with order details by id")
     public ResponseEntity<String> declineOrder(@PathVariable Long id,
                                                @RequestParam(required = false) String reason) {
         return orderService.declineOrder(id, reason);
     }
 
-    @GetMapping
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
+
+    @GetMapping("/my-orders")
+    @PreAuthorize("hasAuthority('USER')")
+    public List<Order> getAllPersonalOrders() {
+        return orderService.getAllPersonalOrders();
+    }
+
 }

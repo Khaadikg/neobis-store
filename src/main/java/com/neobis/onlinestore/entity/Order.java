@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
+
 @Entity
 @Table(name = "orders")
 @Data
@@ -17,7 +18,7 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", insertable=false, updatable=false)
+    @Column(name = "id", insertable = false, updatable = false)
     private Long id;
 
     @Enumerated(EnumType.STRING)
