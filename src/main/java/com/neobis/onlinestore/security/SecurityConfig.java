@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -33,9 +32,16 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/v3/api-docs/**",
+                                "configuration/**",
+                                "/swagger*/**",
+                                "/webjars/**",
+                                "/swagger-ui/**").permitAll()
+                                .anyRequest().authenticated()
+                        )
                 .formLogin(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())

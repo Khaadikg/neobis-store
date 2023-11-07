@@ -1,6 +1,6 @@
 package com.neobis.onlinestore.service;
 
-import com.neobis.onlinestore.dto.request.LoginRequest;
+import com.neobis.onlinestore.dto.request.UserRequest;
 import com.neobis.onlinestore.entity.User;
 import com.neobis.onlinestore.entity.enums.Role;
 import com.neobis.onlinestore.exception.UserAlreadyExistException;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
-    public String registration(LoginRequest request) {
+    public String registration(UserRequest request) {
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new UserAlreadyExistException("User with username = "+ request.getUsername()+" already exist");
         }
@@ -23,7 +23,7 @@ public class AuthService {
     }
 
 
-    public User mapLoginRequestToUser(LoginRequest request) {
+    public User mapLoginRequestToUser(UserRequest request) {
         return User.builder()
                 .role(Role.USER)
                 .mailing(request.isMailing())

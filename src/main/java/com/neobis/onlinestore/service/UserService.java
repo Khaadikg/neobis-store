@@ -47,6 +47,7 @@ public class UserService {
         userRepository.save(User.builder()
                         .username(request.getUsername())
                         .password(encoder.encode(request.getPassword()))
+                        .mailing(false)
                         .role(Role.ADMIN)
                 .build());
         return ResponseEntity.ok("Admin saved fine!");

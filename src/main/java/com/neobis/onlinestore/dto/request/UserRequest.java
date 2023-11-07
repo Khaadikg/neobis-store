@@ -13,4 +13,5 @@ public class UserRequest {
     private String username;
     @NotBlank
     private String password;
+    private boolean mailing;
 }

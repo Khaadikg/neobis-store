@@ -16,7 +16,7 @@ public class UserDetailsConfig implements UserDetailsService {
         this.repository = repository;
     }
 
-    private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
+    private final static String USER_NOT_FOUND_MSG = "user with username %s not found";
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
