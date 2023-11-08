@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(
-                                "/api/auth/**",
+                                "/",
+                                "/registration",
+                                "/register",
                                 "/v3/api-docs/**",
                                 "configuration/**",
                                 "/swagger*/**",
@@ -42,8 +44,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
                         )
-                .formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults())
+                .formLogin((login) -> Customizer.withDefaults().customize(login.successForwardUrl("/index")))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }

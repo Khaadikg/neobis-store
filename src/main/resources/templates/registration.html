@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Save Page</title>
+</head>
+<style>
+    .second_form {
+        top: 400px;
+        position: absolute;
+    }
+    h3 {
+        color: grey;
+    }
+    .form {
+        display: flex;
+        justify-content: center;
+        font-size: 30px;
+        border-radius: 4px;
+        color: black;
+        border: 1px solid darkgray;
+        box-shadow: 0 4px 14px rgba(0,0,0,.1);
+        width: 500px;
+        height: 500px;
+        cursor: pointer;
+        background-color: white;
+        margin-top: 5%;
+        margin-left: 35%;
+        position: center;
+        padding-top: 30px;
+    }
+    .form_input {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        font-size: 30px;
+        text-decoration: none;
+        align-items: center;
+        align-content: center;
+        font-family: sans-serif;
+    }
+    .form_submit {
+        background-color: #007bff;
+        margin-top: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: left;
+        justify-content: left;
+        border-radius: 5px;
+        font-size: 17px;
+        font-family: sans-serif;
+        width: 100px;
+    }
+</style>
+
+<script th:if="${string != null}">
+    alert('SUCCESSFULLY REGISTERED');
+</script>
+
+<body>
+<div class="form">
+
+    <form
+            th:action="@{/register}"
+            th:method="get"
+            th:object="${user}"
+            style="text-align: center">
+
+        <input text="text" class="form_input" th:field="*{username}" placeholder="Name">
+        <br>
+        <br>
+        <input text="text" class="form_input" type="password" th:field="*{password}" placeholder="Password">
+        <br>
+        <input class="form_submit" type="submit" value = "ENTER">
+
+    </form>
+    <form style="text-align: center" class="second_form">
+        <h3>OR</h3>
+        <span>Login: <a href="/login">Sign in</a></span>
+    </form>
+</div>
+
+</body>
+</html>

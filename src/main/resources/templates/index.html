@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Save Page</title>
+</head>
+<style>
+    form {
+        display: flex;
+        justify-content: center;
+        font-size: 30px;
+        border-radius: 4px;
+        color: black;
+        border: 1px solid darkgray;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .1);
+        width: 500px;
+        height: 500px;
+        cursor: pointer;
+        background-color: white;
+        margin-top: 5%;
+        margin-left: 35%;
+        position: center;
+        padding-top: 30px;
+    }
+    .submit {
+        margin-top: 80px;
+        position: inherit;
+        font-size: 40px;
+        background-color: cadetblue;
+    }
+</style>
+<body style="text-align: center">
+<div>
+    <form style="text-align: center">
+        <h3 style="text-align: center">Username: <p th:text="${user.username}"></p>
+            Role: <p th:text="${user.role}"></p>
+            <a th:href="@{/}">Logout</a>
+        </h3>
+    </form>
+</div>
+<span style="padding-top: 10px">Registration: <a href="/registration">Sign-up</a></span>
+
+</body>
+</html>

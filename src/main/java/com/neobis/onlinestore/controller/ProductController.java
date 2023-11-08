@@ -6,6 +6,7 @@ import com.neobis.onlinestore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product", description = "Getting product information by id")
-    public ProductResponse getProductById(@PathVariable Long id) {
+    public ProductResponse getProductById(@Positive @PathVariable Long id) {
         return productService.getProductById(id);
     }
 
@@ -39,7 +40,7 @@ public class ProductController {
 
     @PutMapping
 
-    @Operation(summary = "Update product", description = "Updating product information by id")
+    @Operation(summary = "Update product", description = "Updating product information by uniq barcode")
     public ResponseEntity<String> updateProductByBarcode(@RequestBody @Valid ProductRequest request) {
         return productService.updateProductByBarcode(request);
     }
@@ -52,7 +53,7 @@ public class ProductController {
 
     @DeleteMapping("{id}")
     @Operation(summary = "Delete product", description = "Deleting product by id")
-    public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProductById(@Positive @PathVariable Long id) {
         return productService.deleteProductById(id);
     }
 }

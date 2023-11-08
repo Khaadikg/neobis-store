@@ -5,6 +5,7 @@ import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ public class OrderController {
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Make order", description = "Making order using order requests")
-    public ResponseEntity<String> makeOrder(@RequestBody List<OrderRequest> requests,
+    public ResponseEntity<String> makeOrder(@Valid @RequestBody List<OrderRequest> requests,
                                             @RequestParam String address,
                                             @RequestParam String type) {
         return orderService.makeOrder(requests, address, type);
@@ -38,12 +39,14 @@ public class OrderController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation(summary = "Get all orders", description = "Uses by admin to get all orders")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/my-orders")
     @PreAuthorize("hasAuthority('USER')")
+    @Operation(summary = "Get personal orders", description = "Getting not declined authorised user's orders")
     public List<Order> getAllPersonalOrders() {
         return orderService.getAllPersonalOrders();
     }
