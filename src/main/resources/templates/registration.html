@@ -6,11 +6,8 @@
 </head>
 <style>
     .second_form {
-        top: 400px;
+        top: 450px;
         position: absolute;
-    }
-    h3 {
-        color: grey;
     }
     .form {
         display: flex;
@@ -72,11 +69,12 @@
         <br>
         <input text="text" class="form_input" type="password" th:field="*{password}" placeholder="Password">
         <br>
+        <p>Mailing:
+            <input type="checkbox" name="sendEmailNotification" id="sendEmailNotification" th:field="${user.mailing}"></p>
         <input class="form_submit" type="submit" value = "ENTER">
 
     </form>
-    <form style="text-align: center" class="second_form">
-        <h3>OR</h3>
+    <form style="text-align: center; padding-top: 100px" class="second_form">
         <span>Login: <a href="/login">Sign in</a></span>
     </form>
 </div>

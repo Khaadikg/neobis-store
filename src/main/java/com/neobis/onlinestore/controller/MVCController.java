@@ -31,7 +31,6 @@ public class MVCController {
         return "index";
     }
 
-
     @GetMapping("/registration")
     public String addUser(Model model){
         model.addAttribute("user", new UserRequest());
