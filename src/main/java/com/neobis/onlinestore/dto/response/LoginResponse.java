@@ -1,14 +1,14 @@
 package com.neobis.onlinestore.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class LoginResponse {
-    private String message;
+//    private String message;
+    private String jwt;
     private String authorities;
     private String username;
 }

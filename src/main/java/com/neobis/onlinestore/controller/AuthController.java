@@ -1,6 +1,8 @@
 package com.neobis.onlinestore.controller;
 
+import com.neobis.onlinestore.dto.request.LoginRequest;
 import com.neobis.onlinestore.dto.request.UserRequest;
+import com.neobis.onlinestore.dto.response.LoginResponse;
 import com.neobis.onlinestore.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,10 @@ public class AuthController {
     @PostMapping("/sign-up")
     public String registration(@RequestBody UserRequest request) {
         return authService.registration(request);
+    }
+    @PostMapping("/sign-in")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 
 }

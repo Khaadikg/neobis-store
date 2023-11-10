@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.exception.handler;
 
+import com.neobis.onlinestore.exception.IncorrectLoginException;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.exception.UserAlreadyExistException;
 import com.neobis.onlinestore.exception.reponse.ExceptionResponse;
@@ -20,6 +21,12 @@ public class MainHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse notFoundException(NotFoundException e) { // если сущность (user,product, etc...) не была найдена
+        return new ExceptionResponse(HttpStatus.NOT_FOUND, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(IncorrectLoginException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponse incorrectLoginException(IncorrectLoginException e) { // если сущность (user,product, etc...) не была найдена
         return new ExceptionResponse(HttpStatus.NOT_FOUND, e.getClass().getName(), e.getMessage());
     }
 
