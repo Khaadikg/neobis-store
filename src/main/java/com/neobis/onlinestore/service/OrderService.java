@@ -1,6 +1,7 @@
 package com.neobis.onlinestore.service;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
+import com.neobis.onlinestore.dto.response.OrderResponse;
 import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.entity.OrderDetails;
 import com.neobis.onlinestore.entity.Product;
@@ -33,6 +34,7 @@ public class OrderService {
                 .orderDetails(details)
                 .address(address)
                 .orderDeclined(false)
+                .user(getAuthenticatedUser())
                 .totalOrderPrice(total)
                 .type(OrderType.valueOf(type.toUpperCase()))
                 .stage(OrderStage.ASSEMBLY)
@@ -54,12 +56,13 @@ public class OrderService {
         return ResponseEntity.ok("Order has been declined \n" + "Reason: " + reason);
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAll().stream().map(this::mapOrderToOrderResponse).toList();
     }
 
-    public List<Order> getAllPersonalOrders() {
-        return orderRepository.findAllPersonalOrders(getAuthenticatedUser().getId());
+    public List<OrderResponse> getAllPersonalOrders() {
+        return orderRepository.findAllPersonalOrders(getAuthenticatedUser().getId())
+                .stream().map(this::mapOrderToOrderResponse).toList();
     }
 
     private List<OrderDetails> mapArrayRequestToOrderDetailsList(List<OrderRequest> array) {
@@ -73,6 +76,16 @@ public class OrderService {
                     .build());
         }
         return list;
+    }
+
+    public OrderResponse mapOrderToOrderResponse(Order order) {
+        return OrderResponse.builder()
+                .address(order.getAddress())
+                .orderDetails(order.getOrderDetails())
+                .totalOrderPrice(order.getTotalOrderPrice())
+                .stage(order.getStage())
+                .type(order.getType())
+                .build();
     }
 
     public User getAuthenticatedUser() {

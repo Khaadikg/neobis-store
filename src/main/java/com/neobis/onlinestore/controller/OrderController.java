@@ -1,6 +1,7 @@
 package com.neobis.onlinestore.controller;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
+import com.neobis.onlinestore.dto.response.OrderResponse;
 import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,14 +41,14 @@ public class OrderController {
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get all orders", description = "Uses by admin to get all orders")
-    public List<Order> getAllOrders() {
+    public List<OrderResponse> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/my-orders")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Get personal orders", description = "Getting not declined authorised user's orders")
-    public List<Order> getAllPersonalOrders() {
+    public List<OrderResponse> getAllPersonalOrders() {
         return orderService.getAllPersonalOrders();
     }
 

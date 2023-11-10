@@ -1,5 +1,6 @@
 package com.neobis.onlinestore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.neobis.onlinestore.entity.enums.Role;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -18,9 +19,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity @Table(name = "users")
-@Data @Builder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +44,8 @@ public class User implements UserDetails {
     @Column(name = "updated_date")
     @UpdateTimestamp
     private ZonedDateTime updatedDate;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
     private Set<Order> orders;
 
     @Override

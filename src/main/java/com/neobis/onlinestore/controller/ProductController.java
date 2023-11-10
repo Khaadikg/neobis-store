@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,19 +34,20 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @Operation(summary = "Get all products", description = "Getting all products information")
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @PutMapping
-
     @Operation(summary = "Update product", description = "Updating product information by uniq barcode")
     public ResponseEntity<String> updateProductByBarcode(@RequestBody @Valid ProductRequest request) {
         return productService.updateProductByBarcode(request);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Save product", description = "Saving new product")
     public ResponseEntity<String> addProduct(@RequestBody @Valid ProductRequest request) {
         return productService.saveProduct(request);

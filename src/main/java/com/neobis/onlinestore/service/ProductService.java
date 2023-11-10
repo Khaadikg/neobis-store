@@ -31,7 +31,13 @@ public class ProductService {
         if (productRepository.findByBarcode(request.getBarcode()).isPresent()) {
             return ResponseEntity.badRequest().body("Product by barcode \"" + request.getBarcode() + "\" is already present!");
         }
-        productRepository.save(mapToProduct(request));
+        Product product = mapToProduct(request);
+        if (request.getProductType() != null) {
+            product.setProductType(productTypeRepository.findByName(request.getName()).orElseThrow(
+                    () -> new NotFoundException("Product: product type \n" + request.getProductType() + "\n not exist!")
+            ));
+        }
+        productRepository.save(product);
         return ResponseEntity.ok("Product \"" + request.getName() + "\" has been saved!");
     }
 
@@ -69,9 +75,6 @@ public class ProductService {
     public Product mapToProduct(ProductRequest request) {
         return Product.builder()
                 .barcode(request.getBarcode())
-                .productType(productTypeRepository.findByName(request.getName()).orElseThrow(
-                        () -> new NotFoundException("Not found product type name = " + request.getProductType())
-                ))
                 .description(request.getDescription())
                 .name(request.getName())
                 .price(request.getPrice())

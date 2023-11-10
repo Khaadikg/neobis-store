@@ -33,9 +33,12 @@ public class AuthService {
         User existUser = userRepository.findByUsername(loginRequest.getUsername())
                 .stream().findAny().orElseThrow(
                         () -> new IncorrectLoginException("Username is not correct"));
+        userRepository.save(existUser);
         if (encoder.matches(loginRequest.getPassword(), existUser.getPassword())) {
+            UsernamePasswordAuthenticationToken token =
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-            return loginView(jwtTokenUtil.generateToken(existUser), existUser);
+            User user = userRepository.findByUsername(token.getName()).get();
+            return loginView(jwtTokenUtil.generateToken(user), user);
         } else {
             throw new IncorrectLoginException("Password is not correct" + " or " + "Access denied! You are not registered");
         }
