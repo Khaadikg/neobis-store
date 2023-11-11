@@ -33,7 +33,7 @@ public class ProductService {
         }
         Product product = mapToProduct(request);
         if (request.getProductType() != null) {
-            product.setProductType(productTypeRepository.findByName(request.getName()).orElseThrow(
+            product.setProductType(productTypeRepository.findByName(request.getName().toLowerCase().trim()).orElseThrow(
                     () -> new NotFoundException("Product: product type \n" + request.getProductType() + "\n not exist!")
             ));
         }

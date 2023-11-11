@@ -2,7 +2,6 @@ package com.neobis.onlinestore.controller;
 
 import com.neobis.onlinestore.dto.request.OrderRequest;
 import com.neobis.onlinestore.dto.response.OrderResponse;
-import com.neobis.onlinestore.entity.Order;
 import com.neobis.onlinestore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

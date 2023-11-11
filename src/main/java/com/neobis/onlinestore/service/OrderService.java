@@ -10,7 +10,6 @@ import com.neobis.onlinestore.entity.enums.OrderStage;
 import com.neobis.onlinestore.entity.enums.OrderType;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.repository.OrderRepository;
-import com.neobis.onlinestore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +23,6 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
-    private final UserRepository userRepository;
 
     public ResponseEntity<String> makeOrder(List<OrderRequest> orderArray, String address, String type) {
         List<OrderDetails> details = mapArrayRequestToOrderDetailsList(orderArray);
