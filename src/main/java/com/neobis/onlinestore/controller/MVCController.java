@@ -27,7 +27,7 @@ public class MVCController {
     }
     @RequestMapping("/index")
     public String getIndex(Model model) {
-        model.addAttribute(userService.getAuthenticatedUser());
+        model.addAttribute(userService.getAuthenticatedUsersUsername());
         return "index";
     }
 
