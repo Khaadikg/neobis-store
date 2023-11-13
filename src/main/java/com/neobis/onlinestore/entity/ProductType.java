@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductType {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id", insertable=false, updatable=false)
     private Long id;
     private String name;
     @JsonIgnore

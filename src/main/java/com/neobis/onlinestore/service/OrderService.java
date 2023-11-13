@@ -10,10 +10,13 @@ import com.neobis.onlinestore.entity.enums.OrderStage;
 import com.neobis.onlinestore.entity.enums.OrderType;
 import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.repository.OrderRepository;
+import com.neobis.onlinestore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,22 +26,27 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final UserRepository userRepository;
 
+    @Transactional
     public ResponseEntity<String> makeOrder(List<OrderRequest> orderArray, String address, String type) {
         List<OrderDetails> details = mapArrayRequestToOrderDetailsList(orderArray);
         Double total = 0.0;
-        for(OrderDetails det : details) total += det.getTotal();
+        for (OrderDetails det : details) total += det.getTotal();
+        User user = userRepository.findByUsername(getAuthenticatedUsername()).orElseThrow(
+                () -> new NotFoundException("Order: User not found by username = " + getAuthenticatedUsername())
+        );
         Order order = Order.builder()
                 .orderDetails(details)
                 .address(address)
                 .orderDeclined(false)
-                .user(getAuthenticatedUser())
+                .user(user)
                 .totalOrderPrice(total)
                 .type(OrderType.valueOf(type.toUpperCase()))
                 .stage(OrderStage.ASSEMBLY)
                 .build();
         details.forEach(x -> x.setOrder(order));
-        orderRepository.save(order);
+//        orderRepository.save(order);
         return ResponseEntity.ok("Order has been accepted");
     }
 
@@ -59,7 +67,9 @@ public class OrderService {
     }
 
     public List<OrderResponse> getAllPersonalOrders() {
-        return orderRepository.findAllPersonalOrders(getAuthenticatedUser().getId())
+        return orderRepository.findAllPersonalOrders(userRepository.findByUsername(getAuthenticatedUsername()).orElseThrow(
+                        () -> new NotFoundException("Order: User not found by username = " + getAuthenticatedUsername())
+                ).getId())
                 .stream().map(this::mapOrderToOrderResponse).toList();
     }
 
@@ -86,11 +96,12 @@ public class OrderService {
                 .build();
     }
 
-    public User getAuthenticatedUser() {
+    public String getAuthenticatedUsername() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             throw new NotFoundException("Authenticated user is null");
         }
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUsername();
     }
 
 }

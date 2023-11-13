@@ -34,12 +34,12 @@ public class ProductController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @Operation(summary = "Get all products", description = "Getting all products information")
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping
     @Operation(summary = "Update product", description = "Updating product information by uniq barcode")
     public ResponseEntity<String> updateProductByBarcode(@RequestBody @Valid ProductRequest request) {
@@ -47,13 +47,14 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Save product", description = "Saving new product")
     public ResponseEntity<String> addProduct(@RequestBody @Valid ProductRequest request) {
         return productService.saveProduct(request);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @Operation(summary = "Delete product", description = "Deleting product by id")
     public ResponseEntity<String> deleteProductById(@Positive @PathVariable Long id) {
         return productService.deleteProductById(id);

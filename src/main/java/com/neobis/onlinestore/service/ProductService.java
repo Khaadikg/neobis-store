@@ -52,12 +52,14 @@ public class ProductService {
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
-        product.setProductType(productTypeRepository.findByName(request.getName()).orElseThrow(
-                () -> new NotFoundException("Not found product type name = " + request.getProductType())
-        ));
+        if (request.getProductType() != null) {
+            product.setProductType(productTypeRepository.findByName(request.getName()).orElseThrow(
+                    () -> new NotFoundException("Not found product type name = " + request.getProductType())
+            ));
+        }
         product.setBarcode(request.getBarcode());
         productRepository.save(product);
-        return ResponseEntity.badRequest().body("Product has been updated!");
+        return ResponseEntity.ok().body("Product has been updated!");
     }
 
     public Product checkExistAndReturnProduct(Long id) {
