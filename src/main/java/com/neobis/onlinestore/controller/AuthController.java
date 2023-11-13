@@ -5,7 +5,10 @@ import com.neobis.onlinestore.dto.request.UserRequest;
 import com.neobis.onlinestore.dto.response.LoginResponse;
 import com.neobis.onlinestore.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/auth")
@@ -17,6 +20,7 @@ public class AuthController {
     public String registration(@RequestBody UserRequest request) {
         return authService.registration(request);
     }
+
     @PostMapping("/sign-in")
     public LoginResponse login(@RequestBody LoginRequest request) {
         return authService.login(request);

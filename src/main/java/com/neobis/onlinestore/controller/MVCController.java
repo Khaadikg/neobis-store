@@ -16,26 +16,30 @@ public class MVCController {
 
     private final AuthService authService;
     private final UserService userService;
+
     @Autowired
     public MVCController(AuthService authService, UserService userService) {
         this.authService = authService;
         this.userService = userService;
     }
+
     @RequestMapping("/")
     public ResponseEntity<String> getMain() {
         return ResponseEntity.ok("HELLO WORLD!");
     }
+
     @RequestMapping("/index")
     public String getIndex(Model model) {
-        model.addAttribute(userService.getAuthenticatedUsersUsername());
+        model.addAttribute(userService.getAuthenticatedUsername());
         return "index";
     }
 
     @GetMapping("/registration")
-    public String addUser(Model model){
+    public String addUser(Model model) {
         model.addAttribute("user", new UserRequest());
         return "/registration";
     }
+
     @GetMapping("/register")
     public String showRegistrationPage(@ModelAttribute("user") UserRequest request, Model model) {
         model.addAttribute("string", authService.registration(request));

@@ -10,7 +10,6 @@ import com.neobis.onlinestore.exception.UserAlreadyExistException;
 import com.neobis.onlinestore.repository.UserRepository;
 import com.neobis.onlinestore.security.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,8 @@ public class AuthService {
     private final JwtTokenUtil jwtTokenUtil;
 
     public String registration(UserRequest request) {
-        if(userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new UserAlreadyExistException("User with username = "+ request.getUsername()+" already exist");
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new UserAlreadyExistException("User with username = " + request.getUsername() + " already exist");
         }
         userRepository.save(mapLoginRequestToUser(request));
         return "User successfully registered!";
@@ -31,16 +30,11 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest loginRequest) {
         User existUser = userRepository.findByUsername(loginRequest.getUsername())
-                .stream().findAny().orElseThrow(
-                        () -> new IncorrectLoginException("Username is not correct"));
-        userRepository.save(existUser);
+                .orElseThrow(() -> new IncorrectLoginException("Username is not correct = " + loginRequest.getUsername()));
         if (encoder.matches(loginRequest.getPassword(), existUser.getPassword())) {
-            UsernamePasswordAuthenticationToken token =
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-            User user = userRepository.findByUsername(token.getName()).get();
-            return loginView(jwtTokenUtil.generateToken(user), user);
+            return loginView(jwtTokenUtil.generateToken(existUser), existUser);
         } else {
-            throw new IncorrectLoginException("Password is not correct" + " or " + "Access denied! You are not registered");
+            throw new IncorrectLoginException("Password is not correct or Access denied! You are not registered");
         }
     }
 
