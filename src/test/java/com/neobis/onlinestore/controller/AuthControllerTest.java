@@ -58,14 +58,16 @@ class AuthControllerTest {
 
     @Test
     void login() throws Exception {
-        userRepository.save(User.builder()
-                .username("username")
-                .password(encoder.encode("password"))
-                .role(Role.USER).build());
+        if (userRepository.findByUsername("login_test").isEmpty()) {
+            userRepository.save(User.builder()
+                    .username("login_test")
+                    .password(encoder.encode("password"))
+                    .role(Role.USER).build());
+        }
         this.mockMvc.perform(MockMvcRequestBuilders.post(URL + "/sign-in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(LoginRequest.builder()
-                                .password("password").username("username").build())))
+                                .password("password").username("login_test").build())))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
