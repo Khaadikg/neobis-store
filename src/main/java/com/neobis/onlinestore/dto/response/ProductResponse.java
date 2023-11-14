@@ -1,7 +1,9 @@
 package com.neobis.onlinestore.dto.response;
 
 import com.neobis.onlinestore.entity.ProductType;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 @Builder

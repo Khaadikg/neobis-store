@@ -2,7 +2,10 @@ package com.neobis.onlinestore.entity;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Embeddable
