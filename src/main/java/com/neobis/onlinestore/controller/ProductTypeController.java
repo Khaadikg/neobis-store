@@ -29,7 +29,7 @@ public class ProductTypeController {
 
     @PostMapping
     @Operation(summary = "Add product type", description = "Adding new product type")
-    public String addProductType(@Valid ProductTypeRequest request) {
+    public String addProductType(@Valid @RequestBody ProductTypeRequest request) {
         return productTypeService.addProductType(request);
     }
 

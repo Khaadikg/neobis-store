@@ -28,7 +28,6 @@ public class OrderService {
     private final ProductService productService;
     private final UserRepository userRepository;
 
-    @Transactional
     public ResponseEntity<String> makeOrder(List<OrderRequest> orderArray, String address, String type) {
         List<OrderDetails> details = mapArrayRequestToOrderDetailsList(orderArray);
         Double total = 0.0;
@@ -46,7 +45,7 @@ public class OrderService {
                 .stage(OrderStage.ASSEMBLY)
                 .build();
         details.forEach(x -> x.setOrder(order));
-//        orderRepository.save(order);
+        orderRepository.save(order);
         return ResponseEntity.ok("Order has been accepted");
     }
 

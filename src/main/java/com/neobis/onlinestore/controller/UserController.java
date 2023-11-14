@@ -7,13 +7,13 @@ import com.neobis.onlinestore.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @Tag(name = "User controller", description = "Uses for logic upon users")
@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get all users", description = "Getting all users information")
-    public List<UserResponse> getAllUsers() {
+    public Set<UserResponse> getAllUsers() {
         return userService.getALlUsers();
     }
 
@@ -47,10 +47,10 @@ public class UserController {
         return userService.saveAdminUser(request);
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get by id", description = "Getting user by id")
-    public UserResponse getUserById(@Positive @PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/{name}")
+    @Operation(summary = "Get by name", description = "Getting user by username")
+    public UserResponse getUserByName(@NotBlank @PathVariable String name) {
+        return userService.getUserByUsername(name);
     }
 
     @PutMapping("/info")
@@ -67,10 +67,10 @@ public class UserController {
         return userService.updateUserMainInfo(userRequest);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete user", description = "Deleting user by id")
-    public ResponseEntity<String> deleteUserById(@Positive @PathVariable Long id) {
-        return userService.deleteUserById(id);
+    @DeleteMapping
+    @Operation(summary = "Delete user", description = "Deleting user by username")
+    public ResponseEntity<String> deleteUserByUsername(@RequestParam @NotBlank String username) {
+        return userService.deleteUserByUsername(username);
     }
 
 }

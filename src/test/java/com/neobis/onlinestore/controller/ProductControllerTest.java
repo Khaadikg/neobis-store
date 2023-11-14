@@ -42,8 +42,10 @@ class ProductControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     void getProductById() throws Exception {
-        productRepository.save(new Product());
-        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/1"))
+        if (productRepository.findByBarcode(123).isEmpty()) {
+            productRepository.save(Product.builder().barcode(123).build());
+        }
+        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/123"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -81,9 +83,13 @@ class ProductControllerTest {
 
     @Test
     @WithMockUser(authorities = {"ADMIN"})
-    void deleteProductById() throws Exception {
-        productRepository.save(Product.builder().barcode(123).price(12.0).build());
-        this.mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/1"))
+    void deleteProductByBarcode() throws Exception {
+        if (productRepository.findByBarcode(123).isEmpty()) {
+            productRepository.save(Product.builder().barcode(123).price(12.0).build());
+        }
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .delete(URL)
+                        .param("barcode", "123"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

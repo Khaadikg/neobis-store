@@ -44,7 +44,7 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private ZonedDateTime updatedDate;
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
     private Set<Order> orders;
 
     @Override

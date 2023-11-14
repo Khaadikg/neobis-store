@@ -14,7 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -27,12 +28,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    public List<UserResponse> getALlUsers() {
-        return userRepository.findAll().stream().map(this::mapUserToUserResponse).toList();
+    public Set<UserResponse> getALlUsers() {
+        return userRepository.findAll().stream().map(this::mapUserToUserResponse).collect(Collectors.toSet());
     }
 
-    public UserResponse getUserById(Long id) {
-        User user = checkExistAndReturnUser(id);
+    public UserResponse getUserByUsername(String name) {
+        User user = checkExistAndReturnUserByName(name);
         return mapUserToUserResponse(user);
     }
 
@@ -64,7 +65,7 @@ public class UserService {
     public ResponseEntity<String> updateUserMainInfo(UserRequest request) {
         User user = checkExistAndReturnUserByName(getAuthenticatedUsername());
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
+        user.setPassword(encoder.encode(request.getPassword()));
         userRepository.save(user);
         return ResponseEntity.ok("User successfully saved!");
     }
@@ -76,18 +77,10 @@ public class UserService {
                 .build();
     }
 
-    public ResponseEntity<String> deleteUserById(Long id) {
-        if (userRepository.findById(id).isEmpty()) {
-            return ResponseEntity.badRequest().body("No such user found by id = " + id);
-        }
-        userRepository.deleteById(id);
+    public ResponseEntity<String> deleteUserByUsername(String username) {
+        User user = checkExistAndReturnUserByName(username);
+        userRepository.delete(user);
         return ResponseEntity.ok("User successfully deleted!");
-    }
-
-    private User checkExistAndReturnUser(Long id) {
-        return userRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("No such user found by id = " + id)
-        );
     }
 
     private User checkExistAndReturnUserByName(String name) {

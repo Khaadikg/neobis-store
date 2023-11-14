@@ -30,7 +30,6 @@ class ProductTypeControllerTest {
             = ProductTypeRequest.builder()
             .name("onion")
             .build();
-    private final ProductType productType = ProductType.builder().name("onion").build();
     private MockMvc mockMvc;
     private ObjectMapper mapper;
     private WebApplicationContext webApplicationContext;
@@ -62,7 +61,11 @@ class ProductTypeControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     void updateProductType() throws Exception {
-        productTypeRepository.save(productType);
+        if (productTypeRepository.findByName("onion").isEmpty()) {
+
+            ProductType productType = ProductType.builder().name("onion").build();
+            productTypeRepository.save(productType);
+        }
         this.mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .param("name", "onion")
                         .param("newName", "apple"))

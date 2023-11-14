@@ -27,10 +27,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get product", description = "Getting product information by id")
-    public ProductResponse getProductById(@Positive @PathVariable Long id) {
-        return productService.getProductById(id);
+    @GetMapping("/{barcode}")
+    @Operation(summary = "Get product", description = "Getting product information by barcode")
+    public ProductResponse getProductById(@Positive @PathVariable Integer barcode) {
+        return productService.getProductByBarcode(barcode);
     }
 
     @GetMapping
@@ -53,11 +53,11 @@ public class ProductController {
         return productService.saveProduct(request);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @Operation(summary = "Delete product", description = "Deleting product by id")
-    public ResponseEntity<String> deleteProductById(@Positive @PathVariable Long id) {
-        return productService.deleteProductById(id);
+    @Operation(summary = "Delete product", description = "Deleting product by barcode")
+    public ResponseEntity<String> deleteProductByBarcode(@Positive @RequestParam Integer barcode) {
+        return productService.deleteProductByBarcode(barcode);
     }
 }
 

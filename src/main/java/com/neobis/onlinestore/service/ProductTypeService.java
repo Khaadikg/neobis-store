@@ -21,6 +21,9 @@ public class ProductTypeService {
     }
 
     public String addProductType(ProductTypeRequest request) {
+        if (productTypeRepository.findByName(request.getName()).isPresent()) {
+            return request.getName() + " is already exist";
+        }
         productTypeRepository.save(mapProductTypeRequestToProductType(request));
         return request.getName() + " successfully saved!";
     }

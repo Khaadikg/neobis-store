@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +53,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = {"ADMIN"}, username = "username")
+    @WithMockUser(authorities = {"ADMIN"}, username = "checkGetAll")
     void get_all_users_isOk() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andDo(print())
@@ -107,16 +110,21 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/1"))
+    void getUserByUsername() throws Exception {
+        if (userRepository.findByUsername("username").isEmpty()) {
+            userRepository.save(User.builder().username("username").build());
+        }
+        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/username"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void deleteUserById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/1"))
+    void deleteUserByUsername_isNotFound() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .delete(URL)
+                        .param("username", "username_is_not_found"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 }

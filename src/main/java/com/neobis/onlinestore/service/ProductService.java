@@ -9,6 +9,7 @@ import com.neobis.onlinestore.repository.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductTypeRepository productTypeRepository;
 
-    public ProductResponse getProductById(Long id) {
-        Product product = checkExistAndReturnProduct(id);
+    public ProductResponse getProductByBarcode(Integer barcode) {
+        Product product = checkExistAndReturnProductByBarcode(barcode);
         return mapToProductResponse(product);
     }
 
@@ -41,9 +42,10 @@ public class ProductService {
         return ResponseEntity.ok("Product \"" + request.getName() + "\" has been saved!");
     }
 
-    public ResponseEntity<String> deleteProductById(Long id) {
-        checkExistAndReturnProduct(id);
-        productRepository.deleteById(id);
+    @Transactional
+    public ResponseEntity<String> deleteProductByBarcode(Integer barcode) {
+        checkExistAndReturnProductByBarcode(barcode);
+        productRepository.deleteByBarcode(barcode);
         return ResponseEntity.ok("Product has been removed!");
     }
 
