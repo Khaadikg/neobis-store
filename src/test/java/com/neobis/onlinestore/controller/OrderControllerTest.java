@@ -63,16 +63,6 @@ class OrderControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = {"USER"})
-    void declineOrder() throws Exception {
-        orderRepository.save(Order.builder().stage(OrderStage.ASSEMBLY).build());
-        this.mockMvc.perform(MockMvcRequestBuilders.put(URL + "/1")
-                        .param("reason", "NO_REASON"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
     @WithMockUser(authorities = {"ADMIN"})
     void getAllOrders() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/all"))

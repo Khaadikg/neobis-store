@@ -15,12 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderResponse {
+    private Long id;
     private OrderType type;
-
     private OrderStage stage;
-
     private String address;
-
+    private boolean orderDeclined;
     private Double totalOrderPrice;
     private List<OrderDetails> orderDetails;
 }

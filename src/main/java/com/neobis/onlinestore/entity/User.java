@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,9 +37,9 @@ public class User implements UserDetails {
     private Role role;
     private boolean mailing;
     @Column(unique = true)
-    @Size(min = 2, max = 32, message = "Surname length must be between 2 and 32")
+    @Length(min = 2, max = 32, message = "Surname length must be between 2 and 32")
     private String username;
-    @Size(min = 8, max = 256, message = "Password must be between 8 and 256 digits")
+    @Length(min = 8, max = 256, message = "Password must be between 8 and 256 digits")
     private String password;
     @Column(name = "created_date")
     @CreationTimestamp
@@ -47,7 +48,7 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private ZonedDateTime updatedDate;
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "user")
     private Set<Order> orders;
 
     @Override

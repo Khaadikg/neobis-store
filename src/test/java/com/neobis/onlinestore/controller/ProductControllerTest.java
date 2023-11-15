@@ -66,7 +66,11 @@ class ProductControllerTest {
         }
         this.mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(ProductRequest.builder().barcode(123).price(13.0).build())))
+                        .content(mapper.writeValueAsString(
+                                ProductRequest.builder()
+                                        .name("name")
+                                        .description("some")
+                                        .barcode(123).price(13.0).build())))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -76,7 +80,11 @@ class ProductControllerTest {
     void addProduct() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(ProductRequest.builder().barcode(124).price(13.0).build())))
+                        .content(mapper.writeValueAsString(ProductRequest.builder()
+                                .name("name")
+                                .description("some")
+                                .barcode(124)
+                                .price(13.0).build())))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

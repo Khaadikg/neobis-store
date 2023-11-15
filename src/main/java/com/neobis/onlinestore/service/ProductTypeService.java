@@ -7,6 +7,7 @@ import com.neobis.onlinestore.exception.NotFoundException;
 import com.neobis.onlinestore.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,8 +29,9 @@ public class ProductTypeService {
         return request.getName() + " successfully saved!";
     }
 
-    public String deleteProductType(Long id) {
-        productTypeRepository.deleteById(id);
+    @Transactional
+    public String deleteProductType(String name) {
+        productTypeRepository.deleteByName(name);
         return "Product type successfully deleted!";
     }
 
@@ -46,9 +48,9 @@ public class ProductTypeService {
         return productTypeRepository.findAll().stream().map(this::mapProductTypeToProductTypeResponse).toList();
     }
 
-    public ProductTypeResponse getProductTypeById(Long id) {
-        return mapProductTypeToProductTypeResponse(productTypeRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("ProductType didnt found by id = " + id)
+    public ProductTypeResponse getProductTypeByName(String name) {
+        return mapProductTypeToProductTypeResponse(productTypeRepository.findByName(name).orElseThrow(
+                () -> new NotFoundException("ProductType didnt found by id = " + name)
         ));
     }
 

@@ -41,8 +41,8 @@ public class ProductTypeController {
 
     @DeleteMapping
     @Operation(summary = "Delete product type", description = "Deleting product type")
-    public String deleteProductType(@Positive @RequestParam Long id) {
-        return productTypeService.deleteProductType(id);
+    public String deleteProductType(@Positive @RequestParam String name) {
+        return productTypeService.deleteProductType(name);
     }
 
     @GetMapping
@@ -51,10 +51,10 @@ public class ProductTypeController {
         return productTypeService.getAllProductType();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{name}")
     @Operation(summary = "Get product type", description = "Getting product type by id")
-    public ProductTypeResponse getProductTypeById(@Positive @PathVariable("id") Long id) {
-        return productTypeService.getProductTypeById(id);
+    public ProductTypeResponse getProductTypeById(@Positive @PathVariable("name") String name) {
+        return productTypeService.getProductTypeByName(name);
     }
 
 }

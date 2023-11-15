@@ -83,9 +83,11 @@ class ProductTypeControllerTest {
 
     @Test
     @WithMockUser(authorities = {"ADMIN"})
-    void getProductTypeById() throws Exception {
-        addProductType();
-        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/1"))
+    void getProductTypeByName() throws Exception {
+        if (productTypeRepository.findByName("fruit").isEmpty()) {
+            productTypeRepository.save(ProductType.builder().name("fruit").build());
+        }
+        this.mockMvc.perform(MockMvcRequestBuilders.get(URL + "/fruit"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -93,7 +95,10 @@ class ProductTypeControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     void deleteProductType() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete(URL).param("id", "1"))
+        if (productTypeRepository.findByName("fruit").isEmpty()) {
+            productTypeRepository.save(ProductType.builder().name("fruit").build());
+        }
+        this.mockMvc.perform(MockMvcRequestBuilders.delete(URL).param("name", "fruit"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

@@ -49,7 +49,7 @@ public class OrderService {
     }
 
     public ResponseEntity<String> declineOrder(Long id, String reason) {
-        Order order = orderRepository.findById(id).orElseThrow(
+        Order order = orderRepository.findPersonalOrderById(id, getAuthenticatedUsername()).orElseThrow(
                 () -> new NotFoundException("No such order found by id = " + id)
         );
         if (!order.getStage().equals(OrderStage.ASSEMBLY)) {
@@ -86,6 +86,8 @@ public class OrderService {
 
     public OrderResponse mapOrderToOrderResponse(Order order) {
         return OrderResponse.builder()
+                .id(order.getId())
+                .orderDeclined(order.isOrderDeclined())
                 .address(order.getAddress())
                 .orderDetails(order.getOrderDetails())
                 .totalOrderPrice(order.getTotalOrderPrice())

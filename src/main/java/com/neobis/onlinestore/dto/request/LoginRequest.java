@@ -2,6 +2,7 @@ package com.neobis.onlinestore.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
@@ -9,8 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @NotBlank
+    @Length(min = 2, max = 32, message = "Surname length must be between 2 and 32")
     private String username;
-    @NotBlank
+    @Length(min = 8, max = 256, message = "Password must be between 8 and 256 digits")
     private String password;
 }

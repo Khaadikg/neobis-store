@@ -3,10 +3,7 @@ package com.neobis.onlinestore.entity;
 import com.neobis.onlinestore.entity.enums.OrderStage;
 import com.neobis.onlinestore.entity.enums.OrderType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,7 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Data
+@ToString
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -36,7 +35,7 @@ public class Order {
 
     private Double totalOrderPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
