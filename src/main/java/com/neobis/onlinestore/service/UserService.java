@@ -70,17 +70,17 @@ public class UserService {
         return ResponseEntity.ok("User successfully saved!");
     }
 
+    public ResponseEntity<String> deleteUserByUsername(String username) {
+        User user = checkExistAndReturnUserByName(username);
+        userRepository.delete(user);
+        return ResponseEntity.ok("User successfully deleted!");
+    }
+
     public UserResponse mapUserToUserResponse(User user) {
         return UserResponse.builder()
                 .username(user.getUsername())
                 .userInfo(user.getInfo())
                 .build();
-    }
-
-    public ResponseEntity<String> deleteUserByUsername(String username) {
-        User user = checkExistAndReturnUserByName(username);
-        userRepository.delete(user);
-        return ResponseEntity.ok("User successfully deleted!");
     }
 
     private User checkExistAndReturnUserByName(String name) {

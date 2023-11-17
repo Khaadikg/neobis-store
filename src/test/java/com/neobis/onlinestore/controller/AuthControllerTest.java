@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @SpringBootTest
+@ActiveProfiles("test")
 class AuthControllerTest {
 
     private final String URL = "/api/auth";
@@ -57,6 +59,16 @@ class AuthControllerTest {
     }
 
     @Test
+    void registration_barRequest() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.post(URL + "/sign-up")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(UserRequest.builder()
+                                .password("r").username("r").build())))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void login() throws Exception {
         if (userRepository.findByUsername("login_test").isEmpty()) {
             userRepository.save(User.builder()
@@ -70,5 +82,15 @@ class AuthControllerTest {
                                 .password("password").username("login_test").build())))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void login_notFound() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.post(URL + "/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(LoginRequest.builder()
+                                .password("password_isNotFound").username("username_isNotFound").build())))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }

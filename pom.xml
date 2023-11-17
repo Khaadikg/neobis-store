@@ -10,7 +10,8 @@
     </parent>
     <groupId>com.neobis</groupId>
     <artifactId>online-store</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>v.0.1</version>
+    <packaging>jar</packaging>
     <name>online-store</name>
     <description>online-store</description>
     <properties>
