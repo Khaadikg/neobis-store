@@ -35,7 +35,7 @@ public class OrderService {
                 () -> new NotFoundException("Order: User not found by username = " + getAuthenticatedUsername())
         );
         Order order = Order.builder()
-                .orderDetails(details)
+//                .orderDetails(details)
                 .address(address)
                 .orderDeclined(false)
                 .user(user)

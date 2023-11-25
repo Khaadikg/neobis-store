@@ -3,6 +3,7 @@ package com.neobis.onlinestore.controller;
 import com.neobis.onlinestore.dto.request.UserRequest;
 import com.neobis.onlinestore.service.AuthService;
 import com.neobis.onlinestore.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class MVCController {
 
     @RequestMapping("/index")
     public String getIndex(Model model) {
-        model.addAttribute(userService.getAuthenticatedUsername());
+        model.addAttribute(userService.getUserPersonalInfo());
         return "index";
     }
 
@@ -41,7 +42,7 @@ public class MVCController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationPage(@ModelAttribute("user") UserRequest request, Model model) {
+    public String showRegistrationPage(@Valid @ModelAttribute("user") UserRequest request, Model model) {
         model.addAttribute("string", authService.registration(request));
         return "registration";
     }
